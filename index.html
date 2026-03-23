@@ -3,27 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <title>Frutas y Verduras Garcia Martin</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    button { margin: 5px; padding: 10px; }
+  </style>
 </head>
-<body style="font-family: Arial; padding: 40px;">
-  <h1>🍅 Frutas y Verduras Garcia Martin</h1>
+<body>
 
-  <h2>Login</h2>
+<h1>🍅 Frutas y Verduras Garcia Martin</h1>
+
+<div id="login">
   <input id="user" placeholder="Usuario">
   <button onclick="login()">Entrar</button>
+</div>
 
-  <div id="app" style="margin-top:20px;"></div>
+<div id="app" style="display:none;"></div>
 
-  <script>
-    function login() {
-      const user = document.getElementById("user").value;
-      const app = document.getElementById("app");
+<script>
 
-      if (user === "admin" || user === "silvia70") {
-        app.innerHTML = "<h2>Panel Administrador</h2><p>Pedidos hoy: 3</p>";
-      } else {
-        app.innerHTML = "<h2>Hacer pedido</h2><p>Tomate, Patata, Lechuga</p>";
-      }
-    }
-  </script>
+function login() {
+  const user = document.getElementById("user").value;
+  document.getElementById("login").style.display = "none";
+
+  if (user === "silvia70" || user === "jose63") {
+    adminPanel();
+  } else {
+    clientePanel();
+  }
+}
+
+function adminPanel() {
+  const app = document.getElementById("app");
+  app.style.display = "block";
+
+  app.innerHTML = `
+    <h2>Panel Administrador</h2>
+
+    <h3>Pedidos hoy</h3>
+    <ul>
+      <li>🔴 GO NYAN AQUA</li>
+      <li>🟡 CINES BABEL</li>
+      <li>🟢 HORNO ROSALEN</li>
+    </ul>
+
+    <h3>Preparación por cliente</h3>
+    <p>GO NYAN AQUA → tomate 6kg, patata 4kg</p>
+    <p>CINES BABEL → tomate 3kg</p>
+
+    <h3>Reparto</h3>
+    <p>Centro → Juan</p>
+    <p>Afueras → Pedro</p>
+
+    <h3>Cobros</h3>
+    <p>💵 120€ | 💳 80€</p>
+  `;
+}
+
+function clientePanel() {
+  const app = document.getElementById("app");
+  app.style.display = "block";
+
+  app.innerHTML = `
+    <h2>Hacer pedido</h2>
+
+    <button onclick="add('Tomate')">Tomate</button>
+    <button onclick="add('Patata')">Patata</button>
+    <button onclick="add('Lechuga')">Lechuga</button>
+
+    <h3>Pedido</h3>
+    <div id="pedido"></div>
+  `;
+}
+
+let pedido = [];
+
+function add(p) {
+  pedido.push(p);
+  document.getElementById("pedido").innerText = pedido.join(", ");
+}
+
+</script>
+
 </body>
 </html>
