@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Frutas y Verduras Garcia Martin</title>
+</head>
+<body style="font-family: Arial; padding: 40px;">
+  <h1>🍅 Frutas y Verduras Garcia Martin</h1>
+
+  <h2>Login</h2>
+  <input id="user" placeholder="Usuario">
+  <button onclick="login()">Entrar</button>
+
+  <div id="app" style="margin-top:20px;"></div>
+
+  <script>
+    function login() {
+      const user = document.getElementById("user").value;
+      const app = document.getElementById("app");
+
+      if (user === "admin" || user === "silvia70") {
+        app.innerHTML = "<h2>Panel Administrador</h2><p>Pedidos hoy: 3</p>";
+      } else {
+        app.innerHTML = "<h2>Hacer pedido</h2><p>Tomate, Patata, Lechuga</p>";
+      }
+    }
+  </script>
+</body>
+</html>
