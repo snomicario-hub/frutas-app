@@ -45,24 +45,32 @@ function clientePanel() {
   app.style.display = "block";
 
  const productos = [
-  { nombre: "Tomate pera", unidad: "kg" },
-  { nombre: "Patata agria", unidad: "kg" },
-  { nombre: "Lechuga", unidad: "unidad" },
-  { nombre: "Cebolla", unidad: "kg" },
-  { nombre: "Calabacín", unidad: "kg" },
-  { nombre: "Pimiento rojo", unidad: "kg" },
-  { nombre: "Zanahoria", unidad: "kg" },
-  { nombre: "Albahaca", unidad: "manojo" },
-  { nombre: "Perejil", unidad: "manojo" }
+  "Tomate pera",
+  "Patata agria",
+  "Lechuga",
+  "Cebolla",
+  "Calabacín",
+  "Pimiento rojo",
+  "Zanahoria",
+  "Albahaca",
+  "Perejil",
+  "Plátano",
+  "Manzana"
 ];
 
   let html = "<h2>Hacer pedido</h2>";
 
   productos.forEach(p => {
+
   html += `
-    <div>
-      ${p.nombre} (${p.unidad})
-      <input type="number" min="0" onchange="add('${p.nombre}', this.value)">
+    <div style="margin-bottom:8px;">
+      ${p}
+      <select onchange="setUnidad('${p}', this.value)">
+        <option value="kg">kg</option>
+        <option value="unidad">unidad</option>
+        <option value="manojo">manojo</option>
+      </select>
+      <input type="number" min="0" placeholder="0" onchange="add('${p}', this.value)">
     </div>
   `;
 });
