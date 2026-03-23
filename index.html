@@ -61,9 +61,35 @@ function clientePanel() {
   { nombre: "Perejil", categoria: "HIERBAS" }
 ];
 
-  let html = "<h2>Hacer pedido</h2>";
+  let html = `
+  <h2>Hacer pedido</h2>
+  <input type="text" placeholder="Buscar producto..." onkeyup="filtrar(this.value)">
+`;
+  const categorias = ["VERDURAS", "FRUTAS", "HIERBAS"];
 
-  productos.forEach(p => {
+categorias.forEach(cat => {
+
+  html += `<h3>${cat}</h3>`;
+
+  productos
+    .filter(p => p.categoria === cat)
+    .sort((a, b) => a.nombre.localeCompare(b.nombre))
+    .forEach(p => {
+
+      html += `
+        <div class="producto" data-nombre="${p.nombre.toLowerCase()}">
+          ${p.nombre}
+          <select onchange="setUnidad('${p.nombre}', this.value)">
+            <option value="kg">kg</option>
+            <option value="unidad">unidad</option>
+            <option value="manojo">manojo</option>
+          </select>
+          <input type="number" min="0" placeholder="0" onchange="add('${p.nombre}', this.value)">
+        </div>
+      `;
+    });
+
+});
 
   html += `
     <div style="margin-bottom:8px;">
