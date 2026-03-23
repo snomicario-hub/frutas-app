@@ -46,17 +46,19 @@ function clientePanel() {
   app.style.display = "block";
 
  const productos = [
-  "Tomate pera",
-  "Patata agria",
-  "Lechuga",
-  "Cebolla",
-  "Calabacín",
-  "Pimiento rojo",
-  "Zanahoria",
-  "Albahaca",
-  "Perejil",
-  "Plátano",
-  "Manzana"
+  { nombre: "Tomate pera", categoria: "VERDURAS" },
+  { nombre: "Patata agria", categoria: "VERDURAS" },
+  { nombre: "Lechuga", categoria: "VERDURAS" },
+  { nombre: "Cebolla", categoria: "VERDURAS" },
+  { nombre: "Calabacín", categoria: "VERDURAS" },
+  { nombre: "Pimiento rojo", categoria: "VERDURAS" },
+  { nombre: "Zanahoria", categoria: "VERDURAS" },
+
+  { nombre: "Plátano", categoria: "FRUTAS" },
+  { nombre: "Manzana", categoria: "FRUTAS" },
+
+  { nombre: "Albahaca", categoria: "HIERBAS" },
+  { nombre: "Perejil", categoria: "HIERBAS" }
 ];
 
   let html = "<h2>Hacer pedido</h2>";
