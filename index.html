@@ -9,9 +9,11 @@
 
   <style>
     body { font-family: Arial; padding: 20px; }
-    button { margin: 5px; padding: 10px; }
+    input { width: 60px; margin: 5px; }
+    button { padding: 10px; margin-top: 10px; }
   </style>
 </head>
+
 <body>
 
 <h1>🍅 Frutas y Verduras Garcia Martin</h1>
@@ -25,6 +27,8 @@
 
 <script>
 
+let pedido = {};
+
 function login() {
   const user = document.getElementById("user").value;
   document.getElementById("login").style.display = "none";
@@ -34,6 +38,66 @@ function login() {
   } else {
     clientePanel();
   }
+}
+
+function clientePanel() {
+  const app = document.getElementById("app");
+  app.style.display = "block";
+
+  const productos = [
+    "Tomate pera",
+    "Patata agria",
+    "Lechuga",
+    "Cebolla",
+    "Calabacín",
+    "Pimiento rojo",
+    "Zanahoria"
+  ];
+
+  let html = "<h2>Hacer pedido</h2>";
+
+  productos.forEach(p => {
+    html += `
+      <div>
+        ${p}
+        <input type="number" min="0" onchange="add('${p}', this.value)">
+      </div>
+    `;
+  });
+
+  html += `
+    <h3>Pedido</h3>
+    <div id="pedido"></div>
+    <button onclick="enviar()">Enviar pedido</button>
+  `;
+
+  app.innerHTML = html;
+}
+
+function add(producto, cantidad) {
+  if (cantidad > 0) {
+    pedido[producto] = cantidad;
+  } else {
+    delete pedido[producto];
+  }
+
+  mostrarPedido();
+}
+
+function mostrarPedido() {
+  let texto = "";
+
+  for (let p in pedido) {
+    texto += `${p}: ${pedido[p]}<br>`;
+  }
+
+  document.getElementById("pedido").innerHTML = texto;
+}
+
+function enviar() {
+  alert("Pedido enviado (simulación)");
+  pedido = {};
+  location.reload();
 }
 
 function adminPanel() {
@@ -50,9 +114,9 @@ function adminPanel() {
       <li>🟢 HORNO ROSALEN</li>
     </ul>
 
-    <h3>Preparación por cliente</h3>
-    <p>GO NYAN AQUA → tomate 6kg, patata 4kg</p>
-    <p>CINES BABEL → tomate 3kg</p>
+    <h3>Preparación</h3>
+    <p>Tomate → 82kg</p>
+    <p>Patata → 110kg</p>
 
     <h3>Reparto</h3>
     <p>Centro → Juan</p>
@@ -63,34 +127,11 @@ function adminPanel() {
   `;
 }
 
-function clientePanel() {
-  const app = document.getElementById("app");
-  app.style.display = "block";
-
-  app.innerHTML = `
-    <h2>Hacer pedido</h2>
-
-    <button onclick="add('Tomate')">Tomate</button>
-    <button onclick="add('Patata')">Patata</button>
-    <button onclick="add('Lechuga')">Lechuga</button>
-
-    <h3>Pedido</h3>
-    <div id="pedido"></div>
-  `;
-}
-
-let pedido = [];
-
-function add(p) {
-  pedido.push(p);
-  document.getElementById("pedido").innerText = pedido.join(", ");
-}
-
-</script>
-<script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
+
 </script>
+
 </body>
 </html>
