@@ -130,12 +130,25 @@ function mostrarPedido() {
   let texto = "";
 
   for (let p in pedido) {
-    texto += `${p}: ${pedido[p]}<br>`;
+    texto += `${p}: ${pedido[p].cantidad} ${pedido[p].unidad}<br>`;
   }
 
   document.getElementById("pedido").innerHTML = texto;
 }
 
+  function filtrar(texto) {
+  texto = texto.toLowerCase();
+
+  document.querySelectorAll(".producto").forEach(p => {
+    const nombre = p.dataset.nombre;
+
+    if (nombre.includes(texto)) {
+      p.style.display = "block";
+    } else {
+      p.style.display = "none";
+    }
+  });
+}
 function enviar() {
   alert("Pedido enviado (simulación)");
   pedido = {};
