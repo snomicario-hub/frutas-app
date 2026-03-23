@@ -9,8 +9,7 @@
 
   <style>
     body { font-family: Arial; padding: 20px; }
-    input { width: 60px; margin: 5px; }
-    button { padding: 10px; margin-top: 10px; }
+    input, select { margin: 5px; }
   </style>
 </head>
 
@@ -23,7 +22,7 @@
   <button onclick="login()">Entrar</button>
 </div>
 
-<div id="app" style="display:none;"></div>none;"></div>
+<div id="app" style="display:none;"></div>
 
 <script>
 
@@ -51,72 +50,52 @@ function clientePanel() {
   const app = document.getElementById("app");
   app.style.display = "block";
 
- const productos = [
-  { nombre: "Tomate pera", categoria: "VERDURAS" },
-  { nombre: "Patata agria", categoria: "VERDURAS" },
-  { nombre: "Lechuga", categoria: "VERDURAS" },
-  { nombre: "Cebolla", categoria: "VERDURAS" },
-  { nombre: "Calabacín", categoria: "VERDURAS" },
-  { nombre: "Pimiento rojo", categoria: "VERDURAS" },
-  { nombre: "Zanahoria", categoria: "VERDURAS" },
-
-  { nombre: "Plátano", categoria: "FRUTAS" },
-  { nombre: "Manzana", categoria: "FRUTAS" },
-
-  { nombre: "Albahaca", categoria: "HIERBAS" },
-  { nombre: "Perejil", categoria: "HIERBAS" }
-];
+  const productos = [
+    { nombre: "Tomate pera", categoria: "VERDURAS" },
+    { nombre: "Patata agria", categoria: "VERDURAS" },
+    { nombre: "Lechuga", categoria: "VERDURAS" },
+    { nombre: "Cebolla", categoria: "VERDURAS" },
+    { nombre: "Plátano", categoria: "FRUTAS" },
+    { nombre: "Manzana", categoria: "FRUTAS" },
+    { nombre: "Albahaca", categoria: "HIERBAS" }
+  ];
 
   let html = `
-  <h2>Hacer pedido</h2>
-  <input type="text" placeholder="Buscar producto..." onkeyup="filtrar(this.value)">
-`;
+    <h2>Hacer pedido</h2>
+    <input type="text" placeholder="Buscar..." onkeyup="filtrar(this.value)">
+  `;
+
   const categorias = ["VERDURAS", "FRUTAS", "HIERBAS"];
 
-categorias.forEach(cat => {
+  categorias.forEach(cat => {
+    html += `<h3>${cat}</h3>`;
 
-  html += `<h3>${cat}</h3>`;
+    productos
+      .filter(p => p.categoria === cat)
+      .sort((a, b) => a.nombre.localeCompare(b.nombre))
+      .forEach(p => {
 
-  productos
-    .filter(p => p.categoria === cat)
-    .sort((a, b) => a.nombre.localeCompare(b.nombre))
-    .forEach(p => {
+        html += `
+          <div class="producto" data-nombre="${p.nombre.toLowerCase()}">
+            ${p.nombre}
+            <select onchange="setUnidad('${p.nombre}', this.value)">
+              <option value="kg">kg</option>
+              <option value="unidad">unidad</option>
+              <option value="manojo">manojo</option>
+            </select>
+            <input type="number" min="0" onchange="add('${p.nombre}', this.value)">
+          </div>
+        `;
+      });
+  });
 
-      html += `
-        <div class="producto" data-nombre="${p.nombre.toLowerCase()}">
-          ${p.nombre}
-          <select onchange="setUnidad('${p.nombre}', this.value)">
-            <option value="kg">kg</option>
-            <option value="unidad">unidad</option>
-            <option value="manojo">manojo</option>
-          </select>
-          <input type="number" min="0" placeholder="0" onchange="add('${p.nombre}', this.value)">
-        </div>
-      `;
-    });
-
-});
-
-  html += `
-    <div style="margin-bottom:8px;">
-      ${p}
-      <select onchange="setUnidad('${p}', this.value)">
-        <option value="kg">kg</option>
-        <option value="unidad">unidad</option>
-        <option value="manojo">manojo</option>
-      </select>
-      <input type="number" min="0" placeholder="0" onchange="add('${p}', this.value)">
-    </div>
-  `;
-});
-
-  html += `
-    <h3>Pedido</h3>
-    <div id="pedido"></div>
-    <button onclick="enviar()">Enviar pedido</button>
-  `;
+  html += `<h3>Pedido</h3><div id="pedido"></div>`;
 
   app.innerHTML = html;
+}
+
+function setUnidad(producto, unidad) {
+  unidadesSeleccionadas[producto] = unidad;
 }
 
 function add(producto, cantidad) {
@@ -142,23 +121,14 @@ function mostrarPedido() {
   document.getElementById("pedido").innerHTML = texto;
 }
 
-  function filtrar(texto) {
+function filtrar(texto) {
   texto = texto.toLowerCase();
 
   document.querySelectorAll(".producto").forEach(p => {
     const nombre = p.dataset.nombre;
 
-    if (nombre.includes(texto)) {
-      p.style.display = "block";
-    } else {
-      p.style.display = "none";
-    }
+    p.style.display = nombre.includes(texto) ? "block" : "none";
   });
-}
-function enviar() {
-  alert("Pedido enviado (simulación)");
-  pedido = {};
-  location.reload();
 }
 
 function adminPanel() {
@@ -167,24 +137,7 @@ function adminPanel() {
 
   app.innerHTML = `
     <h2>Panel Administrador</h2>
-
-    <h3>Pedidos hoy</h3>
-    <ul>
-      <li>🔴 GO NYAN AQUA</li>
-      <li>🟡 CINES BABEL</li>
-      <li>🟢 HORNO ROSALEN</li>
-    </ul>
-
-    <h3>Preparación</h3>
-    <p>Tomate → 82kg</p>
-    <p>Patata → 110kg</p>
-
-    <h3>Reparto</h3>
-    <p>Centro → Juan</p>
-    <p>Afueras → Pedro</p>
-
-    <h3>Cobros</h3>
-    <p>💵 120€ | 💳 80€</p>
+    <p>Pedidos hoy: 3</p>
   `;
 }
 
