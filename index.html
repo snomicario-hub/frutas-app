@@ -59,13 +59,13 @@ function clientePanel() {
   let html = "<h2>Hacer pedido</h2>";
 
   productos.forEach(p => {
-    html += `
-      <div>
-        ${p}
-        <input type="number" min="0" onchange="add('${p}', this.value)">
-      </div>
-    `;
-  });
+  html += `
+    <div>
+      ${p.nombre} (${p.unidad})
+      <input type="number" min="0" onchange="add('${p.nombre}', this.value)">
+    </div>
+  `;
+});
 
   html += `
     <h3>Pedido</h3>
