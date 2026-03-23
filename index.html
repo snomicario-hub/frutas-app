@@ -28,6 +28,7 @@
 <script>
 
 let pedido = {};
+let unidadesSeleccionadas = {};
 
 function login() {
   const user = document.getElementById("user").value;
@@ -86,7 +87,10 @@ function clientePanel() {
 
 function add(producto, cantidad) {
   if (cantidad > 0) {
-    pedido[producto] = cantidad;
+    pedido[producto] = {
+      cantidad: cantidad,
+      unidad: unidadesSeleccionadas[producto] || "kg"
+    };
   } else {
     delete pedido[producto];
   }
