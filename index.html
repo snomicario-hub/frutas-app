@@ -23,7 +23,7 @@
   <button onclick="login()">Entrar</button>
 </div>
 
-<div id="app" style="display:none;"></div>
+<div id="app" style="display:none;"></div>none;"></div>
 
 <script>
 
@@ -32,6 +32,12 @@ let unidadesSeleccionadas = {};
 
 function login() {
   const user = document.getElementById("user").value;
+
+  if (!user) {
+    alert("Introduce usuario");
+    return;
+  }
+
   document.getElementById("login").style.display = "none";
 
   if (user === "silvia70" || user === "jose63") {
