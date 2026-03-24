@@ -10,6 +10,7 @@
   <style>
     body { font-family: Arial; padding: 20px; }
     input, select { margin: 5px; }
+    .producto { margin-bottom: 6px; }
   </style>
 </head>
 
@@ -28,7 +29,9 @@
 
 let pedido = {};
 let unidadesSeleccionadas = {};
+let favoritos = [];
 
+// LOGIN
 function login() {
   const user = document.getElementById("user").value;
 
@@ -43,19 +46,10 @@ function login() {
     adminPanel();
   } else {
     clientePanel();
-    html += `<button onclick="verFavoritos()">⭐ Ver favoritos</button>`;
-    function verFavoritos() {
-  let texto = "Favoritos:\n";
-
-  favoritos.forEach(f => {
-    texto += f + "\n";
-  });
-
-  alert(texto);
-}
   }
 }
 
+// CLIENTE
 function clientePanel() {
   const app = document.getElementById("app");
   app.style.display = "block";
@@ -72,6 +66,7 @@ function clientePanel() {
 
   let html = `
     <h2>Hacer pedido</h2>
+    <button onclick="verFavoritos()">⭐ Ver favoritos</button>
     <input type="text" placeholder="Buscar..." onkeyup="filtrar(this.value)">
   `;
 
@@ -87,21 +82,56 @@ function clientePanel() {
 
         html += `
           <div class="producto" data-nombre="${p.nombre.toLowerCase()}">
-    ⭐ <span onclick="toggleFavorito('${p.nombre}')">${p.nombre}</span>
-    <select onchange="setUnidad('${p.nombre}', this.value)">
-      <option value="kg">kg</option>
-      <option value="unidad">unidad</option>
-      <option value="manojo">manojo</option>
-    </select>
-    <input type="number" min="0" onchange="add('${p.nombre}', this.value)">
-  </div>
-`;
+            ⭐ <span onclick="toggleFavorito('${p.nombre}')">${p.nombre}</span>
+            <select onchange="setUnidad('${p.nombre}', this.value)">
+              <option value="kg">kg</option>
+              <option value="unidad">unidad</option>
+              <option value="manojo">manojo</option>
+            </select>
+            <input type="number" min="0" onchange="add('${p.nombre}', this.value)">
+          </div>
+        `;
+      });
+  });
 
   html += `<h3>Pedido</h3><div id="pedido"></div>`;
 
   app.innerHTML = html;
 }
 
+// ADMIN
+function adminPanel() {
+  const app = document.getElementById("app");
+  app.style.display = "block";
+
+  app.innerHTML = `
+    <h2>Panel Administrador</h2>
+    <p>Pedidos hoy: 3</p>
+  `;
+}
+
+// FAVORITOS
+function toggleFavorito(producto) {
+  if (favoritos.includes(producto)) {
+    favoritos = favoritos.filter(p => p !== producto);
+  } else {
+    favoritos.push(producto);
+  }
+
+  alert("Favoritos actualizados");
+}
+
+function verFavoritos() {
+  let texto = "Favoritos:\n";
+
+  favoritos.forEach(f => {
+    texto += f + "\n";
+  });
+
+  alert(texto);
+}
+
+// PEDIDOS
 function setUnidad(producto, unidad) {
   unidadesSeleccionadas[producto] = unidad;
 }
@@ -129,39 +159,21 @@ function mostrarPedido() {
   document.getElementById("pedido").innerHTML = texto;
 }
 
+// BUSCADOR
 function filtrar(texto) {
   texto = texto.toLowerCase();
 
   document.querySelectorAll(".producto").forEach(p => {
     const nombre = p.dataset.nombre;
-
     p.style.display = nombre.includes(texto) ? "block" : "none";
   });
 }
 
-function adminPanel() {
-  const app = document.getElementById("app");
-  app.style.display = "block";
-
-  app.innerHTML = `
-    <h2>Panel Administrador</h2>
-    <p>Pedidos hoy: 3</p>
-  `;
-}
-
+// SERVICE WORKER
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
-let favoritos = [];
-    function toggleFavorito(producto) {
-  if (favoritos.includes(producto)) {
-    favoritos = favoritos.filter(p => p !== producto);
-  } else {
-    favoritos.push(producto);
-  }
 
-  alert("Favoritos actualizados");
-}
 </script>
 
 </body>
