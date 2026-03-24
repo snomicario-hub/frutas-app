@@ -43,6 +43,16 @@ function login() {
     adminPanel();
   } else {
     clientePanel();
+    html += `<button onclick="verFavoritos()">⭐ Ver favoritos</button>`;
+    function verFavoritos() {
+  let texto = "Favoritos:\n";
+
+  favoritos.forEach(f => {
+    texto += f + "\n";
+  });
+
+  alert(texto);
+}
   }
 }
 
@@ -77,17 +87,15 @@ function clientePanel() {
 
         html += `
           <div class="producto" data-nombre="${p.nombre.toLowerCase()}">
-            ${p.nombre}
-            <select onchange="setUnidad('${p.nombre}', this.value)">
-              <option value="kg">kg</option>
-              <option value="unidad">unidad</option>
-              <option value="manojo">manojo</option>
-            </select>
-            <input type="number" min="0" onchange="add('${p.nombre}', this.value)">
-          </div>
-        `;
-      });
-  });
+    ⭐ <span onclick="toggleFavorito('${p.nombre}')">${p.nombre}</span>
+    <select onchange="setUnidad('${p.nombre}', this.value)">
+      <option value="kg">kg</option>
+      <option value="unidad">unidad</option>
+      <option value="manojo">manojo</option>
+    </select>
+    <input type="number" min="0" onchange="add('${p.nombre}', this.value)">
+  </div>
+`;
 
   html += `<h3>Pedido</h3><div id="pedido"></div>`;
 
@@ -144,7 +152,16 @@ function adminPanel() {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
+let favoritos = [];
+    function toggleFavorito(producto) {
+  if (favoritos.includes(producto)) {
+    favoritos = favoritos.filter(p => p !== producto);
+  } else {
+    favoritos.push(producto);
+  }
 
+  alert("Favoritos actualizados");
+}
 </script>
 
 </body>
